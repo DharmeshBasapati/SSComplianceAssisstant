@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Compliance Assistant</string>
+    <string name="msg_enter_valid_phone_number">Please enter a valid phone number.</string>
+    <string name="msg_please_enter_otp">Please enter OTP</string>
+    <string name="msg_enter_correct_otp">Please enter correct OTP.</string>
+    <string name="msg_enter_valid_email_address">Please enter a valid email address.</string>
+    <string name="msg_phone_number_verified_successfully">Phone number verified successfully.</string>
+    <string name="msg_email_verified_successfully">Email verified successfully.</string>
+    <string name="label_app_name">Compliance\nAssistant</string>
+    <string name="label_country_code">+91</string>
+    <string name="hint_enter_your_phone_number">Enter your phone number</string>
+    <string name="label_get_otp">Get OTP</string>
+    <string name="hint_enter_otp">Enter OTP</string>
+    <string name="label_verify_otp">Verify OTP</string>
+    <string name="hint_enter_your_email_address">Enter your email address</string>
+    <string name="label_get_otp_on_email">Get OTP on Email</string>
+</resources>

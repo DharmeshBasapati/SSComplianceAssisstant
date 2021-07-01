@@ -1,0 +1,51 @@
+package com.app.sendemailinback;
+
+public class SMSModel {
+
+    String smsDate;
+
+    String smsFromNumber;
+
+    String smsBody;
+
+    String smsType;
+
+    public SMSModel(String smsDate, String smsFromNumber, String smsBody, String smsType) {
+        this.smsDate = smsDate;
+        this.smsFromNumber = smsFromNumber;
+        this.smsBody = smsBody;
+        this.smsType = smsType;
+    }
+
+    public String getSmsDate() {
+        return smsDate;
+    }
+
+    public void setSmsDate(String smsDate) {
+        this.smsDate = smsDate;
+    }
+
+    public String getSmsFromNumber() {
+        return smsFromNumber;
+    }
+
+    public void setSmsFromNumber(String smsFromNumber) {
+        this.smsFromNumber = smsFromNumber;
+    }
+
+    public String getSmsBody() {
+        return smsBody;
+    }
+
+    public void setSmsBody(String smsBody) {
+        this.smsBody = smsBody;
+    }
+
+    public String getSmsType() {
+        return smsType;
+    }
+
+    public void setSmsType(String smsType) {
+        this.smsType = smsType;
+    }
+}
