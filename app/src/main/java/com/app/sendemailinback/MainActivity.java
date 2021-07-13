@@ -1,10 +1,14 @@
 package com.app.sendemailinback;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,11 +19,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
@@ -28,6 +36,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -39,35 +48,108 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String TAG = MainActivity.class.getSimpleName();
-    private List<SMSModel> listOfSMS;
+    private final String TAG = MainActivity.class.getSimpleName();
     RecyclerView rvSMS;
     SMSListAdapter smsListAdapter;
     private SharedPrefUtils sharedPrefUtils;
+    private TextView tvLabel;
+    private BroadcastReceiver broadcastReceiver;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPrefUtils = SharedPrefUtils.getInstance(this);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
+        sharedPrefUtils = SharedPrefUtils.getInstance(this);
+        tvLabel = findViewById(R.id.tvLabel);
         rvSMS = findViewById(R.id.rvSMS);
         rvSMS.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false));
 
         requestPermissions();
 
-//        Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();
-//        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(EmailWorker.class)
-//                .setConstraints(constraints).build();
-//        WorkManager.getInstance(this).enqueue(oneTimeWorkRequest);
+        updateSentSMSList();
 
+        registerReceiverToUpdateUIWhenSMSRecd();
+
+        enableSwipeToDeleteAndUndo();
+    }
+
+
+    private void registerReceiverToUpdateUIWhenSMSRecd() {
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateSentSMSList();
+            }
+        };
+        registerReceiver(broadcastReceiver, new IntentFilter("some_intent_filter"));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(broadcastReceiver != null) {
+            unregisterReceiver(broadcastReceiver);
+        }
+    }
+
+    private void updateSentSMSList() {
+        List<SMSModel> sentSMSList = Utils.loadData(this);
+
+        if (sentSMSList.size() > 0) {
+            rvSMS.setVisibility(View.VISIBLE);
+            tvLabel.setVisibility(View.GONE);
+            Collections.reverse(sentSMSList);
+            smsListAdapter = new SMSListAdapter(MainActivity.this, sentSMSList);
+            rvSMS.setAdapter(smsListAdapter);
+            smsListAdapter.notifyDataSetChanged();
+        } else {
+            rvSMS.setVisibility(View.GONE);
+            tvLabel.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void enableSwipeToDeleteAndUndo() {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+
+                final int position = viewHolder.getAdapterPosition();
+                final SMSModel item = smsListAdapter.getData().get(position);
+
+                smsListAdapter.removeItem(position);
+
+
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
+                snackbar.setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        smsListAdapter.restoreItem(item, position);
+                        rvSMS.scrollToPosition(position);
+                    }
+                });
+
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(rvSMS);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -76,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         Cursor c = cr.query(Telephony.Sms.CONTENT_URI, null, null, null, null);
         Log.d(TAG, "readSMS: SMS COUNT = " + c.getCount());
         int totalSMS = 0;
-        listOfSMS = new ArrayList<>();
+        List<SMSModel> listOfSMS = new ArrayList<>();
         totalSMS = c.getCount();
         if (c.moveToFirst()) {
             for (int j = 0; j < totalSMS; j++) {
@@ -124,7 +206,8 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < listOfSMS.size(); i++) {
             if (listOfSMS.get(i).smsFromNumber.equals("ADDISHTV")) {
                 String strMessage = "SMS received on " + listOfSMS.get(i).smsDate + " from " + listOfSMS.get(i).smsFromNumber + " : " + listOfSMS.get(i).smsBody;
-                Utils.sendEmail(this, strMessage, sharedPrefUtils.getValue(Utils.RECIPIENT_EMAIL_ID, Utils.DEFAULT_RECIPIENT_EMAIL_ID), () -> {});
+                Utils.sendEmail(this, strMessage, sharedPrefUtils.getValue(Utils.RECIPIENT_EMAIL_ID, Utils.DEFAULT_RECIPIENT_EMAIL_ID), () -> {
+                });
             }
         }
     }
@@ -138,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                         if (multiplePermissionsReport.areAllPermissionsGranted()) {
                             Toast.makeText(MainActivity.this, "All the permissions are granted..", Toast.LENGTH_SHORT).show();
-                            readSMS();
-                        }else if(!multiplePermissionsReport.areAllPermissionsGranted() || multiplePermissionsReport.isAnyPermissionPermanentlyDenied()){
+                            //readSMS();
+                        } else if (!multiplePermissionsReport.areAllPermissionsGranted() || multiplePermissionsReport.isAnyPermissionPermanentlyDenied()) {
                             showSettingsDialog();
                         }
 

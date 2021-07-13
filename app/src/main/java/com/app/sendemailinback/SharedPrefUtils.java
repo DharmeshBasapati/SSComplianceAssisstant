@@ -29,7 +29,6 @@ public class SharedPrefUtils {
         return sharedPrefUtils;
     }
 
-
     /**
      * @param prefsKey:   key of the preference object
      * @param prefsValue: value of the preference object

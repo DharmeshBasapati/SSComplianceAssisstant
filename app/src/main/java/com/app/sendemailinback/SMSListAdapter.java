@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SMSListAdapter extends RecyclerView.Adapter<SMSListAdapter.MyViewHolder>{
@@ -30,8 +31,8 @@ public class SMSListAdapter extends RecyclerView.Adapter<SMSListAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(SMSListAdapter.MyViewHolder holder, final int position) {
-
         holder.tvSMSFrom.setText(smsModelList.get(position).getSmsFromNumber());
+        holder.tvSMSDate.setText(smsModelList.get(position).getSmsDate());
         holder.tvSMSBody.setText(smsModelList.get(position).getSmsBody());
 
     }
@@ -45,13 +46,29 @@ public class SMSListAdapter extends RecyclerView.Adapter<SMSListAdapter.MyViewHo
         public ImageView imgSMS;
         public TextView tvSMSFrom;
         public TextView tvSMSBody;
+        public TextView tvSMSDate;
 
         public MyViewHolder(View view) {
             super(view);
             imgSMS =  view.findViewById(R.id.imgSMS);
             tvSMSFrom =  view.findViewById(R.id.tvSMSFrom);
             tvSMSBody =  view.findViewById(R.id.tvSMSBody);
+            tvSMSDate = view.findViewById(R.id.tvSMSDate);
         }
+    }
+
+    public void removeItem(int position) {
+        smsModelList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(SMSModel item, int position) {
+        smsModelList.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public List<SMSModel> getData() {
+        return smsModelList;
     }
 
 }

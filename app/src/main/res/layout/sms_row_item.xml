@@ -18,12 +18,29 @@
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvSMSFrom"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_15ssp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSMSFrom"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="AD-DISHTV"
+                android:textSize="@dimen/_15ssp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSMSDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="13/07/2021 01:09 PM"
+                android:textSize="@dimen/_10ssp" />
+
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSMSBody"
@@ -31,6 +48,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="3"
+            android:text="SOme sms messgae text lorem ipsum"
             android:textSize="@dimen/_12ssp" />
 
     </LinearLayout>

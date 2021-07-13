@@ -43,6 +43,9 @@ public class MySmsReceiver extends BroadcastReceiver {
                     (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
             // Fill the msgs array.
             msgs = new SmsMessage[pdus.length];
+            SMSModel sentSMS;
+            String smsDate = "", smsFromNumber = "", smsType = "";
+            StringBuilder smsBody = new StringBuilder();
             for (int i = 0; i < msgs.length; i++) {
                 // Check Android version and use appropriate createFromPdu.
                 if (isVersionM) {
@@ -53,16 +56,22 @@ public class MySmsReceiver extends BroadcastReceiver {
                     msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                 }
                 // Build the message to show.
-                if(i==0){
-                    Date dateFormat= new Date(msgs[i].getTimestampMillis());
+                if (i == 0) {
+                    Date dateFormat = new Date(msgs[i].getTimestampMillis());
                     DateFormat formatter = new SimpleDateFormat(Utils.SMS_DATE_FORMAT, Locale.getDefault());
                     String today = formatter.format(dateFormat);
-
-                    strMessage = new StringBuilder("SMS received on " + today  + " from " + msgs[i].getOriginatingAddress() + " : ");
+                    smsDate = today;
+                    strMessage = new StringBuilder("SMS received on " + today + " from " + msgs[i].getOriginatingAddress() + " : ");
                 }
 
                 strMessage.append(msgs[i].getMessageBody());
+                smsFromNumber = msgs[i].getOriginatingAddress();
+                smsBody.append(msgs[i].getMessageBody());
+                smsType = "";
+
             }
+
+            sentSMS = new SMSModel(smsDate, smsFromNumber, smsBody.toString(), smsType);
 
             try {
                 // Log and display the SMS message.
@@ -70,6 +79,10 @@ public class MySmsReceiver extends BroadcastReceiver {
                 Toast.makeText(context, strMessage.toString(), Toast.LENGTH_LONG).show();
 
                 Utils.sendEmail(context, strMessage.toString(), sharedPrefUtils.getValue(Utils.RECIPIENT_EMAIL_ID, Utils.DEFAULT_RECIPIENT_EMAIL_ID), () -> Log.d(TAG, "checkIsEmailSent: TRUE"));
+
+                Utils.saveData(context, sentSMS);//This is to save the RECD SMS, email that RECD SMS, and display that SMS on Home Screen of the app.
+
+
 
             } catch (Exception e) {
                 e.printStackTrace();
