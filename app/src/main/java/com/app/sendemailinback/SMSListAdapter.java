@@ -15,10 +15,12 @@ import java.util.List;
 public class SMSListAdapter extends RecyclerView.Adapter<SMSListAdapter.MyViewHolder>{
     List<SMSModel> smsModelList;
     private Context context;
+    onItemClickListener onItemClickListener;
 
-    public SMSListAdapter(Context context, List<SMSModel> smsModelList) {
+    public SMSListAdapter(Context context, List<SMSModel> smsModelList, onItemClickListener onItemClickListener) {
         this.smsModelList = smsModelList;
         this.context = context;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -31,10 +33,16 @@ public class SMSListAdapter extends RecyclerView.Adapter<SMSListAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(SMSListAdapter.MyViewHolder holder, final int position) {
-        holder.tvSMSFrom.setText(smsModelList.get(position).getSmsFromNumber());
-        holder.tvSMSDate.setText(smsModelList.get(position).getSmsDate());
-        holder.tvSMSBody.setText(smsModelList.get(position).getSmsBody());
-
+        SMSModel smsModel = smsModelList.get(position);
+        holder.tvSMSFrom.setText(smsModel.getSmsFromNumber());
+        holder.tvSMSDate.setText(smsModel.getSmsDate());
+        holder.tvSMSBody.setText(smsModel.getSmsBody());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onItemClick(smsModel);
+            }
+        });
     }
 
     @Override
@@ -43,7 +51,7 @@ public class SMSListAdapter extends RecyclerView.Adapter<SMSListAdapter.MyViewHo
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imgSMS;
+        public TextView imgSMS;
         public TextView tvSMSFrom;
         public TextView tvSMSBody;
         public TextView tvSMSDate;

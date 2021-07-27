@@ -5,8 +5,11 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -64,11 +67,11 @@ public class LoginActivity extends AppCompatActivity {
 
         lnrEmail = findViewById(R.id.lnrEmail);
         edtEmail = findViewById(R.id.edtEmail);
-        edtEmailOtp = findViewById(R.id.edtEmailOtp);
         Button btnGetOtpOnEmail = findViewById(R.id.btnGetOtpOnEmail);
+        edtEmailOtp = findViewById(R.id.edtEmailOtp);
         Button btnEmailVerify = findViewById(R.id.btnEmailVerify);
 
-        updateLayouts();
+      //  updateLayouts();
 
         generateOTPBtn.setOnClickListener(v -> {
             if (TextUtils.isEmpty(edtPhone.getText().toString())) {
@@ -100,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                 Utils.sendEmail(LoginActivity.this,
                         "Please enter this OTP - " + newOTP + " to verify your email.",
                         edtEmail.getText().toString(),
-                        () -> LoginActivity.this.runOnUiThread(() -> lnrProgress.setVisibility(View.GONE)));
+                        () -> LoginActivity.this.runOnUiThread(this::hideProgress));
             }
         });
 
@@ -152,9 +155,30 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         // Start service and provide it a way to communicate with this class.
         Intent startServiceIntent = new Intent(this, NetworkSchedulerService.class);
         startService(startServiceIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+
+            //return true if in App's Battery settings "Not optimized" and false if "Optimizing battery use"
+            if (pm.isIgnoringBatteryOptimizations(packageName)) {
+                Toast.makeText(this, "Great - App is not optimizing battery.", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "OOPS - App is optimizing battery.", Toast.LENGTH_SHORT).show();
+
+                /*Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);*/
+            }
+        }
+
+
     }
 
     private void updateLayouts() {

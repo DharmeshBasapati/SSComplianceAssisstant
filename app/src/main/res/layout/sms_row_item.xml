@@ -3,39 +3,46 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="@dimen/_10sdp">
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingVertical="@dimen/_16sdp"
+    android:paddingHorizontal="@dimen/_12sdp">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <TextView
         android:id="@+id/imgSMS"
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:src="@drawable/ic_baseline_account_circle_24"
-        android:tint="@color/purple_500" />
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:background="@drawable/circle_shape"
+        android:gravity="center"
+        android:text="S"
+        android:textColor="#EE0014"
+        android:textSize="@dimen/_18ssp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_15sdp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:gravity="center_vertical"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvSMSFrom"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="AD-DISHTV"
-                android:textSize="@dimen/_15ssp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvSMSDate"
                 android:layout_width="wrap_content"
+                android:textColor="#757575"
                 android:layout_height="wrap_content"
                 android:text="13/07/2021 01:09 PM"
                 android:textSize="@dimen/_10ssp" />
@@ -47,9 +54,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="3"
-            android:text="SOme sms messgae text lorem ipsum"
-            android:textSize="@dimen/_12ssp" />
+            android:maxLines="1"
+            android:text="Some sms messgae text lorem ipsum"
+            android:textColor="#757575"
+            android:textSize="@dimen/_11ssp" />
 
     </LinearLayout>
 

@@ -72,7 +72,7 @@ public class Utils {
     public static void sendEmail(Context context, String messageBody, String recipientsEmailId, EmailSendListener emailSendListener) {
         new Thread(() -> {
             try {
-                if (Utils.isOnline(context)) {
+//                if (Utils.isOnline(context)) {
                     Log.d("Utils", "sendEmail: Sending started...");
                     MailSender sender = new MailSender(SENDER_EMAIL_ID,
                             SENDER_EMAIL_PASSWORD);
@@ -83,7 +83,7 @@ public class Utils {
                     //This is to update the SENT SMS LIST in HOME SCREEN(MainActivity.java)
                     Intent in = new Intent("some_intent_filter");
                     context.sendBroadcast(in);
-                }
+//                }
             } catch (Exception e) {
                 Log.e("SendMail", e.getMessage(), e);
             }

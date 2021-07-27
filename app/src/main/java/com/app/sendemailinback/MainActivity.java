@@ -16,9 +16,14 @@ import android.provider.Settings;
 import android.provider.Telephony;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +31,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,13 +60,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements onItemClickListener {
 
     private final String TAG = MainActivity.class.getSimpleName();
     RecyclerView rvSMS;
     SMSListAdapter smsListAdapter;
     private SharedPrefUtils sharedPrefUtils;
-    private TextView tvLabel;
+    private LinearLayout tvLabel;
     private BroadcastReceiver broadcastReceiver;
     private CoordinatorLayout coordinatorLayout;
 
@@ -68,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         sharedPrefUtils = SharedPrefUtils.getInstance(this);
@@ -75,15 +85,23 @@ public class MainActivity extends AppCompatActivity {
         rvSMS = findViewById(R.id.rvSMS);
         rvSMS.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false));
 
+        rvSMS.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL));
+
         requestPermissions();
 
         updateSentSMSList();
 
-        registerReceiverToUpdateUIWhenSMSRecd();
+        //registerReceiverToUpdateUIWhenSMSRecd();
 
-        enableSwipeToDeleteAndUndo();
+        //enableSwipeToDeleteAndUndo();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiverToUpdateUIWhenSMSRecd();
+    }
 
     private void registerReceiverToUpdateUIWhenSMSRecd() {
         broadcastReceiver = new BroadcastReceiver() {
@@ -98,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(broadcastReceiver != null) {
+        if (broadcastReceiver != null) {
             unregisterReceiver(broadcastReceiver);
         }
     }
@@ -110,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             rvSMS.setVisibility(View.VISIBLE);
             tvLabel.setVisibility(View.GONE);
             Collections.reverse(sentSMSList);
-            smsListAdapter = new SMSListAdapter(MainActivity.this, sentSMSList);
+            smsListAdapter = new SMSListAdapter(MainActivity.this, sentSMSList, this);
             rvSMS.setAdapter(smsListAdapter);
             smsListAdapter.notifyDataSetChanged();
         } else {
@@ -193,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         c.close();
 
         if (listOfSMS != null && listOfSMS.size() > 0) {
-            smsListAdapter = new SMSListAdapter(MainActivity.this, listOfSMS);
+            smsListAdapter = new SMSListAdapter(MainActivity.this, listOfSMS, this);
             rvSMS.setAdapter(smsListAdapter);
             smsListAdapter.notifyDataSetChanged();
 
@@ -214,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void requestPermissions() {
         Dexter.withActivity(this)
-                .withPermissions(Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS)
+                .withPermissions(Manifest.permission.RECEIVE_SMS)
                 .withListener(new MultiplePermissionsListener() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
@@ -271,5 +289,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    @Override
+    public void onItemClick(SMSModel smsModel) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_sms_detail);
+
+        ImageView imgShare = bottomSheetDialog.findViewById(R.id.imgShare);
+        ImageView imgClose = bottomSheetDialog.findViewById(R.id.imgClose);
+        TextView tvSMSFrom = bottomSheetDialog.findViewById(R.id.tvSMSFrom);
+        TextView tvSMSBody = bottomSheetDialog.findViewById(R.id.tvSMSBody);
+        TextView tvSMSDate = bottomSheetDialog.findViewById(R.id.tvSMSDate);
+
+        imgShare.setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+        });
+
+        imgClose.setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+        });
+
+        tvSMSFrom.setText(smsModel.getSmsFromNumber());
+        tvSMSDate.setText(smsModel.getSmsDate());
+        tvSMSBody.setText(smsModel.getSmsBody());
+
+        bottomSheetDialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_about_us:
+                startActivity(new Intent(this,AboutUsActivity.class));
+                return true;
+            case R.id.menu_logout:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
