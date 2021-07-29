@@ -42,28 +42,31 @@
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla bibendum erat felis, quis accumsan diam tempus iaculis. Praesent iaculis dui sit amet turpis tincidunt malesuada et at lectus. Sed nec sem non mauris porttitor volutpat quis eget urna. Viverra suscipit odio sed sollicitudin." />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_1"
+            android:id="@+id/btnRateApp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="rateApp"
             android:layout_marginTop="@dimen/_40sdp"
             android:text="RATE APP"
             android:textColor="@color/colorPrimary" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_2"
+            android:id="@+id/btnShareApp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="shareApp"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="SHARE APP"
             android:textColor="@color/colorPrimary" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_3"
+            android:id="@+id/btnContactUs"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="contactUs"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="CONTACT US"
             android:textColor="@color/colorPrimary" />

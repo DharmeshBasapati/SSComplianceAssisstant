@@ -7,19 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthOptions;
-import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.concurrent.TimeUnit;
+import static android.view.View.GONE;
+import static com.app.sendemailinback.Utils.EMAIL_VERIFICATION_SUBJECT;
 
 public class EmailAddressActivity extends AppCompatActivity {
 
@@ -27,36 +23,59 @@ public class EmailAddressActivity extends AppCompatActivity {
 
     private SharedPrefUtils sharedPrefUtils;
     private EditText edtEmail;
+    private LinearLayout lnrProgress;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_email_address);
 
-        FirebaseApp.initializeApp(this);
         sharedPrefUtils = SharedPrefUtils.getInstance(this);
-
+        fab = findViewById(R.id.fab);
         edtEmail = findViewById(R.id.edtEmail);
         Button btnGetOtpOnEmail = findViewById(R.id.btnGetOtpOnEmail);
-
+        lnrProgress = findViewById(R.id.lnrProgress);
         btnGetOtpOnEmail.setOnClickListener(v -> {
             if (TextUtils.isEmpty(edtEmail.getText().toString())) {
                 Toast.makeText(EmailAddressActivity.this, getResources().getString(R.string.msg_enter_valid_email_address), Toast.LENGTH_SHORT).show();
             } else {
+                showProgress();
                 String newOTP = Utils.getRandomNumberString();
                 Log.d(TAG, "onClick: New OTP = " + newOTP);
                 sharedPrefUtils.setValue(Utils.CURRENT_OTP, newOTP);
+
+                String messageBody = "Dear customer," +
+                        "<br/><br/>" +
+                        "Please enter below OTP on Chartered Box Reminder App." +
+                        "<br/><br/>" +
+                        "<b>OTP: " + newOTP + "</b> "+
+                        "<br/><br/>" +
+                        "Kind Regards," +
+                        "<br/>" +
+                        "Chartered Box Reminder Team";
+
                 Utils.sendEmail(EmailAddressActivity.this,
-                        "Please enter this OTP - " + newOTP + " to verify your email.",
+                        EMAIL_VERIFICATION_SUBJECT, messageBody,
                         edtEmail.getText().toString(),
-                        () -> EmailAddressActivity.this.runOnUiThread(() -> {
+                        null, () -> EmailAddressActivity.this.runOnUiThread(() -> {
+                            hideProgress();
                             Intent intent = new Intent(EmailAddressActivity.this, EmailAddressOTPActivity.class);
-                            intent.putExtra("REG_EMAIL_ID",edtEmail.getText().toString());
+                            intent.putExtra("REG_EMAIL_ID", edtEmail.getText().toString());
                             startActivity(intent);
                         }));
             }
         });
     }
 
+    public void showProgress() {
+        fab.setCompatElevation(0);
+        lnrProgress.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress() {
+        fab.setCompatElevation(2);
+        lnrProgress.setVisibility(GONE);
+    }
 
 }

@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +24,8 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import static android.view.View.GONE;
+
 public class MobileNumberOTPActivity extends AppCompatActivity {
 
     private static final String TAG = MobileNumberOTPActivity.class.getSimpleName();
@@ -30,19 +35,22 @@ public class MobileNumberOTPActivity extends AppCompatActivity {
     private EditText edtOTP;
     private String verificationId;
     private String REG_MOBILE_NUMBER;
+    private LinearLayout lnrProgress;
+    private Button verifyOTPBtn;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_mobile_number_otp);
 
-        FirebaseApp.initializeApp(this);
-
         mAuth = FirebaseAuth.getInstance();
         sharedPrefUtils = SharedPrefUtils.getInstance(this);
 
         edtOTP = findViewById(R.id.idEdtOtp);
-        Button verifyOTPBtn = findViewById(R.id.idBtnVerify);
+        verifyOTPBtn = findViewById(R.id.idBtnVerify);
+        fab = findViewById(R.id.fab);
+        lnrProgress = findViewById(R.id.lnrProgress);
 
         REG_MOBILE_NUMBER = getIntent().getStringExtra("REG_MOBILE_NUMBER");
 
@@ -54,11 +62,23 @@ public class MobileNumberOTPActivity extends AppCompatActivity {
 
     }
 
+    public void showProgress() {
+        fab.setCompatElevation(0);
+        lnrProgress.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress() {
+        fab.setCompatElevation(2);
+        lnrProgress.setVisibility(GONE);
+    }
+
     private void sendVerificationCode(String number) {
+        Toast.makeText(this, "Waiting for OTP...", Toast.LENGTH_SHORT).show();
+        //showProgress();
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(number)
-                        .setTimeout(60L, TimeUnit.SECONDS)
+                        .setTimeout(30L, TimeUnit.SECONDS)
                         .setActivity(this)
                         .setCallbacks(mCallBack)
                         .build();
@@ -69,6 +89,15 @@ public class MobileNumberOTPActivity extends AppCompatActivity {
 
     private final PhoneAuthProvider.OnVerificationStateChangedCallbacks
             mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+        @Override
+        public void onCodeAutoRetrievalTimeOut(@NonNull String message) {
+            super.onCodeAutoRetrievalTimeOut(message);
+            Log.d(TAG, "onCodeAutoRetrievalTimeOut: CALLED - "+message);
+            edtOTP.setEnabled(true);
+            verifyOTPBtn.setEnabled(true);
+            Toast.makeText(MobileNumberOTPActivity.this, "OTP Code Auto Retrieval Timed Out.", Toast.LENGTH_LONG).show();
+        }
 
         @Override
         public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
@@ -83,7 +112,12 @@ public class MobileNumberOTPActivity extends AppCompatActivity {
             final String code = phoneAuthCredential.getSmsCode();
             if (code != null) {
                 //OPEN OTP SCREEN
+                //hideProgress();
                 edtOTP.setText(code);
+                edtOTP.setEnabled(true);
+                verifyOTPBtn.setEnabled(true);
+                showProgress();
+                verifyCode(code);
 
             }
         }
@@ -91,8 +125,11 @@ public class MobileNumberOTPActivity extends AppCompatActivity {
         @Override
         public void onVerificationFailed(FirebaseException e) {
             Log.d(TAG, "onVerificationFailed: CALLED");
+            edtOTP.setEnabled(true);
+            verifyOTPBtn.setEnabled(true);
             Toast.makeText(MobileNumberOTPActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+
     };
 
     private void verifyOTP() {
@@ -113,6 +150,7 @@ public class MobileNumberOTPActivity extends AppCompatActivity {
     private void signInWithCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
+                    hideProgress();
                     if (task.isSuccessful()) {
                         Toast.makeText(MobileNumberOTPActivity.this, getResources().getString(R.string.msg_phone_number_verified_successfully), Toast.LENGTH_LONG).show();
                         sharedPrefUtils.setValue(Utils.IS_MOBILE_VERIFIED, true);

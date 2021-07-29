@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.app.sendemailinback.Utils.EMAIL_SUBJECT;
+
 public class MySmsReceiver extends BroadcastReceiver {
 
     private static final String TAG =
@@ -61,28 +63,32 @@ public class MySmsReceiver extends BroadcastReceiver {
                     DateFormat formatter = new SimpleDateFormat(Utils.SMS_DATE_FORMAT, Locale.getDefault());
                     String today = formatter.format(dateFormat);
                     smsDate = today;
-                    strMessage = new StringBuilder("SMS received on " + today + " from " + msgs[i].getOriginatingAddress() + " : ");
+
+                    strMessage = new StringBuilder("Dear customer,<br/><br/>Below SMS has been sent from <b>'" + msgs[i].getOriginatingAddress() + "'</b> at " + today + ".<br/><br/><p style=\"color:#1769aa;\">");
                 }
 
                 strMessage.append(msgs[i].getMessageBody());
+
                 smsFromNumber = msgs[i].getOriginatingAddress();
                 smsBody.append(msgs[i].getMessageBody());
                 smsType = "";
 
             }
 
-            sentSMS = new SMSModel(smsDate, smsFromNumber, smsBody.toString(), smsType);
+            strMessage.append("</p><br/><br/>Kind Regards," +
+                    "<br/>" +
+                    "Chartered Box Reminder Team");
+
+            sentSMS = new SMSModel(smsDate, smsFromNumber, smsBody.toString(), smsType, false);
 
             try {
                 // Log and display the SMS message.
                 Log.d(TAG, "onReceive: " + strMessage);
-                Toast.makeText(context, strMessage.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "SMS Received - " + smsBody.toString(), Toast.LENGTH_LONG).show();
 
-                Utils.sendEmail(context, strMessage.toString(), sharedPrefUtils.getValue(Utils.RECIPIENT_EMAIL_ID, Utils.DEFAULT_RECIPIENT_EMAIL_ID), () -> Log.d(TAG, "checkIsEmailSent: TRUE"));
+                Utils.sendEmail(context, EMAIL_SUBJECT, strMessage.toString(), sharedPrefUtils.getValue(Utils.RECIPIENT_EMAIL_ID, Utils.DEFAULT_RECIPIENT_EMAIL_ID), sentSMS, () -> Log.d(TAG, "checkIsEmailSent: TRUE"));
 
-                Utils.saveData(context, sentSMS);//This is to save the RECD SMS, email that RECD SMS, and display that SMS on Home Screen of the app.
-
-
+                //Utils.saveData(context, sentSMS);//This is to save the RECD SMS, email that RECD SMS, and display that SMS on Home Screen of the app.
 
             } catch (Exception e) {
                 e.printStackTrace();

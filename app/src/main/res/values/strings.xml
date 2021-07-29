@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Chartered Box Reminder</string>
     <string name="msg_enter_valid_phone_number">Please enter a valid mobile number.</string>
-    <string name="msg_please_enter_otp">Please enter OTP</string>
-    <string name="msg_enter_correct_otp">Please enter correct OTP.</string>
-    <string name="msg_enter_valid_email_address">Please enter a valid email address.</string>
+    <string name="msg_please_enter_otp">Please enter an OTP.</string>
+    <string name="msg_enter_correct_otp">Please enter valid OTP.</string>
+    <string name="msg_enter_valid_email_address">Please enter valid Email ID.</string>
     <string name="msg_phone_number_verified_successfully">Mobile number verified successfully.</string>
-    <string name="msg_email_verified_successfully">Email verified successfully.</string>
+    <string name="msg_email_verified_successfully">Email ID verified successfully.</string>
     <string name="label_app_name">Compliance\nAssistant</string>
     <string name="label_country_code">+91</string>
     <string name="hint_enter_your_phone_number">Enter your mobile number</string>
@@ -15,4 +15,8 @@
     <string name="label_verify_and_create_account">Verify &amp; Create Account</string>
     <string name="hint_enter_your_email_address">Enter your email address</string>
     <string name="label_get_otp_on_email">Get OTP on Email</string>
+    <string name="msg_declaration">Allow Chartered Box Reminder App to read your incoming SMS and automatically forward your SMS to your registered email.
+\n\n*No OTP messages are read.
+\n\nYou can opt-out SMS permission anytime by simply denying the permission from App info settings.
+\n\nBy clicking the \'I Agree\' button, you agree to Chartered Box Reminder App\'s policy.</string>
 </resources>

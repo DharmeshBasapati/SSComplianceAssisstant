@@ -5,7 +5,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" /> <!-- Always required on api < 21, needed to keep a wake lock while your job is running -->
+<!--    <uses-permission android:name="android.permission.READ_SMS" />-->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <!-- Always required on api < 21, needed to keep a wake lock while your job is running -->
     <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Required on api < 21 if you are using setRequiredNetworkType(int) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Required on all api levels if you are using setPersisted(true) -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -17,10 +19,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SendEmailInBack">
-        <activity android:name=".AboutUsActivity"></activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".MobileNumberActivity">
+        <activity android:name=".AboutUsActivity"/>
+        <activity android:name=".LoginActivity"/>
+        <activity android:name=".MainActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".MobileNumberActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +38,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".MobileNumberOTPActivity" />
-        <activity android:name=".EmailAddressActivity" />
+        <activity android:name=".EmailAddressActivity" >
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
         <activity android:name=".EmailAddressOTPActivity" />
 
         <receiver
@@ -45,6 +61,7 @@
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
     </application>
 
 </manifest>

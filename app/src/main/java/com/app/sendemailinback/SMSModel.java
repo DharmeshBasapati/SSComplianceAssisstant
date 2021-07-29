@@ -10,11 +10,14 @@ public class SMSModel {
 
     String smsType;
 
-    public SMSModel(String smsDate, String smsFromNumber, String smsBody, String smsType) {
+    boolean isEmailed;
+
+    public SMSModel(String smsDate, String smsFromNumber, String smsBody, String smsType, boolean isEmailed) {
         this.smsDate = smsDate;
         this.smsFromNumber = smsFromNumber;
         this.smsBody = smsBody;
         this.smsType = smsType;
+        this.isEmailed = isEmailed;
     }
 
     public String getSmsDate() {
@@ -47,5 +50,13 @@ public class SMSModel {
 
     public void setSmsType(String smsType) {
         this.smsType = smsType;
+    }
+
+    public boolean isEmailed() {
+        return isEmailed;
+    }
+
+    public void setEmailed(boolean emailed) {
+        isEmailed = emailed;
     }
 }

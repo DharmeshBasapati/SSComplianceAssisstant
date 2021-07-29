@@ -5,11 +5,9 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -100,10 +98,10 @@ public class LoginActivity extends AppCompatActivity {
                 String newOTP = Utils.getRandomNumberString();
                 Log.d(TAG, "onClick: New OTP = " + newOTP);
                 sharedPrefUtils.setValue(Utils.CURRENT_OTP, newOTP);
-                Utils.sendEmail(LoginActivity.this,
-                        "Please enter this OTP - " + newOTP + " to verify your email.",
-                        edtEmail.getText().toString(),
-                        () -> LoginActivity.this.runOnUiThread(this::hideProgress));
+//                Utils.sendEmail(LoginActivity.this,
+//                        "Please enter this OTP - " + newOTP + " to verify your email.",
+//                        edtEmail.getText().toString(),
+//                        null, () -> LoginActivity.this.runOnUiThread(this::hideProgress));
             }
         });
 

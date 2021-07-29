@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.55"
+            android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center">
 
@@ -28,30 +29,31 @@
             android:id="@+id/lnrMobileOTP"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.45"
-            android:background="#F5F5F5"
+            android:layout_weight="1"
+            android:background="@color/section_grey_color"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="@dimen/_15sdp"
             android:visibility="visible">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:gravity="center"
                 android:text="OTP VERIFICATION"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/title_text_color"
+                android:textSize="@dimen/_14ssp"
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
                 android:text="Enter the One Time Password sent to your mobile number"
-                android:textColor="#9B9B9B"
+                android:textColor="@color/subtitle_text_color"
                 android:textSize="@dimen/_12ssp" />
 
 
@@ -61,17 +63,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_30sdp"
                 android:background="@drawable/grey_border_rounded_rect"
+                android:enabled="false"
                 android:hint="@string/hint_enter_otp"
                 android:importantForAutofill="no"
                 android:inputType="number"
                 android:maxLength="6"
-                android:padding="15sp" />
+                android:padding="@dimen/_15sdp" />
 
             <Button
                 android:id="@+id/idBtnVerify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:enabled="false"
                 android:text="@string/label_verify_otp" />
 
         </LinearLayout>
@@ -79,10 +83,43 @@
 
     </LinearLayout>
 
-    <ImageView
+    <!--    <ImageView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:src="@drawable/ic_icon_mobile" />-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:src="@drawable/ic_icon_mobile" />
+        android:backgroundTint="@color/white"
+        android:clickable="false"
+        android:src="@drawable/ic_baseline_smartphone_24"
+        app:borderWidth="0dp"
+        app:elevation="@dimen/_2sdp"
+        app:fabCustomSize="@dimen/_50sdp"
+        app:tint="@color/colorPrimary" />
+
+    <LinearLayout
+        android:id="@+id/lnrProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#55000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/white"
+            android:indeterminateTintMode="src_atop" />
+
+    </LinearLayout>
+
 </FrameLayout>
