@@ -1,6 +1,7 @@
 package com.app.sendemailinback;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class AboutUsActivity extends AppCompatActivity {
 
@@ -17,6 +20,9 @@ public class AboutUsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     public void rateApp(View view) {
@@ -25,16 +31,18 @@ public class AboutUsActivity extends AppCompatActivity {
         Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
         try {
             startActivity(marketIntent);
-        }catch (Exception e){
-            Log.d(TAG, "rateApp: "+e.getMessage());
+        } catch (Exception e) {
+            Log.d(TAG, "rateApp: " + e.getMessage());
         }
     }
 
     public void shareApp(View view) {
-        Utils.shareSMS(AboutUsActivity.this,"Share CB Reminder App");
+        Utils.shareSMS(AboutUsActivity.this, "Hey,\n\nChartered Box Reminder App is a service that allows to forward your SMS to registered Email address.\n\nGet it for free at\nmarket://details?id=com.app.sscompliancereminder");
     }
 
     public void contactUs(View view) {
-        Toast.makeText(this, "You clicked Contact Us.", Toast.LENGTH_SHORT).show();
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_contact_us);
+        bottomSheetDialog.show();
     }
 }
