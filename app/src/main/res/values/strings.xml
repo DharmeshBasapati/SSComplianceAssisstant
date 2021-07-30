@@ -16,7 +16,8 @@
     <string name="hint_enter_your_email_address">Enter your email address</string>
     <string name="label_get_otp_on_email">Get OTP on Email</string>
     <string name="msg_declaration">Allow Chartered Box Reminder App to read your incoming SMS and automatically forward your SMS to your registered email.
-\n\n*No OTP messages are read.
 \n\nYou can opt-out SMS permission anytime by simply denying the permission from App info settings.
-\n\nBy clicking the \'I Agree\' button, you agree to Chartered Box Reminder App\'s policy.</string>
+\n\nBy clicking the \'I Agree\' button, you agree to Chartered Box Reminder App\'s above policy.</string>
+    <string name="about_us">Chartered Box Reminder App is a service that allows to forward your SMS to registered Email address.\n\nChartered Box Reminder App also allows you to share your SMS via app to other apps.\n\nYou can contact the Chartered Box Reminder team by clicking on Contact us button.</string>
+    <string name="alert_battery_optimization">Please note that if app is running in background and battery optimization is enabled then Chartered Box Reminder app will not be able to read/forward incoming SMS.\n\nPlease disable battery optimization by using below steps.\n1) Go to Chartered Box Reminder <b>App Info</b> Settings\n2) Select <b>Battery</b> option\n3) Turn off battery optimization\n</string>
 </resources>

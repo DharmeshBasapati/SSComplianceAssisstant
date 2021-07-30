@@ -65,8 +65,10 @@
                 android:background="@drawable/grey_border_rounded_rect"
                 android:hint="@string/hint_enter_otp"
                 android:importantForAutofill="no"
+                android:gravity="center"
                 android:inputType="number"
                 android:maxLength="6"
+                android:textSize="@dimen/_13ssp"
                 android:padding="@dimen/_15sdp"
                 tools:ignore="TextFields" />
 

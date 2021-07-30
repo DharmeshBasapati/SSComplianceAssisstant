@@ -34,9 +34,10 @@ public class Utils {
     public static final String VERIFIED_MOBILE_NUMBER = "VERIFIED_MOBILE_NUMBER";
     public static final String IS_MOBILE_VERIFIED = "IS_MOBILE_VERIFIED";
     public static final String IS_EMAIL_VERIFIED = "IS_EMAIL_VERIFIED";
+    public static final String IS_USER_UNDERSTOOD="IS_USER_UNDERSTOOD";
 
 //    public static final String SMS_DATE_FORMAT = "hh:mm a dd/MM/yyyy ";
-    public static final String SMS_DATE_FORMAT = "HH:MM dd-MMM-yy ";
+    public static final String SMS_DATE_FORMAT = "HH:mm dd-MMM-yy ";
 
     public static void shareSMS(Activity activity, String textToShare) {
         Intent intent2 = new Intent();

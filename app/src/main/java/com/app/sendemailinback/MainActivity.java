@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.provider.Telephony;
 import android.util.Log;
@@ -37,6 +38,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
     private BroadcastReceiver broadcastReceiver;
     private CoordinatorLayout coordinatorLayout;
     private BottomSheet bottomSheetDeclaration;
+    private BottomSheetDialog bsdBatteryAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,21 +92,53 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
         bottomSheetDeclaration = new BottomSheet(this);
         bottomSheetDeclaration.setCancelable(false);
 
-        checkPermission();
+        bsdBatteryAlert = new BottomSheetDialog(this);
+        bsdBatteryAlert.setContentView(R.layout.bottom_sheet_battery_alert);
+        bsdBatteryAlert.setCancelable(false);
 
-        registerReceiverToUpdateUIWhenSMSRecd();
+        MaterialButton btnOkIUnderstand = bsdBatteryAlert.findViewById(R.id.btnOkIUnderstand);
+        btnOkIUnderstand.setOnClickListener(v -> {
+            bsdBatteryAlert.dismiss();
+            sharedPrefUtils.setValue(Utils.IS_USER_UNDERSTOOD,true);
+        });
 
     }
 
-    private void checkPermission() {
+    private void checkIfBatteryOptimizedOrNot() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+
+            //return true if in App's Battery settings "Not optimized" and false if "Optimizing battery use"
+            if (pm.isIgnoringBatteryOptimizations(packageName)) {
+                //Toast.makeText(this, "App is not optimizing battery.", Toast.LENGTH_SHORT).show();
+            } else {
+                //Toast.makeText(this, "App is optimizing battery.", Toast.LENGTH_SHORT).show();
+
+
+                if(!bsdBatteryAlert.isShowing() && !sharedPrefUtils.getValue(Utils.IS_USER_UNDERSTOOD,false)){
+                    bsdBatteryAlert.show();
+                }
+
+                /*Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);*/
+            }
+        }
+    }
+
+    private void checkSMSPermission() {
         PackageManager pm = getPackageManager();
         int hasPerm = pm.checkPermission(
                 Manifest.permission.RECEIVE_SMS,
                 getPackageName());
         if (hasPerm != PackageManager.PERMISSION_GRANTED) {//If not granted
-            Toast.makeText(this, "Permission NOT granted", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Permission NOT granted", Toast.LENGTH_SHORT).show();
             bottomSheetDeclaration.show(getSupportFragmentManager(), bottomSheetDeclaration.getTag());
-        }else{
+        } else {
+            checkIfBatteryOptimizedOrNot();
             updateSentSMSList();
         }
     }
@@ -111,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
     @Override
     protected void onResume() {
         super.onResume();
+        checkSMSPermission();
         registerReceiverToUpdateUIWhenSMSRecd();
     }
 
@@ -221,18 +257,19 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
-                        Log.i(TAG, "onPermissionGranted: "+response.toString());
+                        Log.i(TAG, "onPermissionGranted: " + response.toString());
                         if (bottomSheetDeclaration != null) {
                             bottomSheetDeclaration.dismiss();
                         }
-                        Toast.makeText(MainActivity.this, "SMS permission is granted.", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(MainActivity.this, "SMS permission is granted.", Toast.LENGTH_SHORT).show();
+                       // checkIfBatteryOptimizedOrNot();
                         updateSentSMSList();
                     }
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
-                        Log.i(TAG, "onPermissionDenied: "+response.toString());
-                        Toast.makeText(MainActivity.this, "SMS permission is NOT granted.", Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "onPermissionDenied: " + response.toString());
+                        // Toast.makeText(MainActivity.this, "SMS permission is NOT granted.", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -311,29 +348,29 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
 
     @Override
     public void onItemClick(SMSModel smsModel) {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        bottomSheetDialog.setContentView(R.layout.bottom_sheet_sms_detail);
+        BottomSheetDialog bsdSMSDetail = new BottomSheetDialog(this);
+        bsdSMSDetail.setContentView(R.layout.bottom_sheet_sms_detail);
 
-        ImageView imgShare = bottomSheetDialog.findViewById(R.id.imgShare);
-        ImageView imgClose = bottomSheetDialog.findViewById(R.id.imgClose);
-        TextView tvSMSFrom = bottomSheetDialog.findViewById(R.id.tvSMSFrom);
-        TextView tvSMSBody = bottomSheetDialog.findViewById(R.id.tvSMSBody);
-        TextView tvSMSDate = bottomSheetDialog.findViewById(R.id.tvSMSDate);
+        ImageView imgShare = bsdSMSDetail.findViewById(R.id.imgShare);
+        ImageView imgClose = bsdSMSDetail.findViewById(R.id.imgClose);
+        TextView tvSMSFrom = bsdSMSDetail.findViewById(R.id.tvSMSFrom);
+        TextView tvSMSBody = bsdSMSDetail.findViewById(R.id.tvSMSBody);
+        TextView tvSMSDate = bsdSMSDetail.findViewById(R.id.tvSMSDate);
 
         imgShare.setOnClickListener(v -> {
-            Utils.shareSMS(MainActivity.this,smsModel.smsBody+"\n\n- Sent from Chartered Box Reminder");
-            //bottomSheetDialog.dismiss();
+            Utils.shareSMS(MainActivity.this, smsModel.smsBody + "\n\n- Sent from Chartered Box Reminder");
+            //bsdSMSDetail.dismiss();
         });
 
         imgClose.setOnClickListener(v -> {
-            bottomSheetDialog.dismiss();
+            bsdSMSDetail.dismiss();
         });
 
         tvSMSFrom.setText(smsModel.getSmsFromNumber());
         tvSMSDate.setText(smsModel.getSmsDate());
         tvSMSBody.setText(smsModel.getSmsBody());
 
-        bottomSheetDialog.show();
+        bsdSMSDetail.show();
     }
 
     @Override
@@ -356,11 +393,12 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
                 sharedPrefUtils.setValue(Utils.IS_EMAIL_VERIFIED, false);
                 sharedPrefUtils.setValue(Utils.RECIPIENT_EMAIL_ID, "");
                 sharedPrefUtils.setValue(Utils.CURRENT_OTP, "");
+                sharedPrefUtils.setValue(Utils.IS_USER_UNDERSTOOD,false);
 
                 //We can also clear Sent SMS list if needed
                 //sharedPrefUtils.setValue("SENT_SMS_LIST", null);
 
-                startActivity(new Intent(this,MobileNumberActivity.class));
+                startActivity(new Intent(this, MobileNumberActivity.class));
                 finish();
                 return true;
             default:

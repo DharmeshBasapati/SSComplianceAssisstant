@@ -47,12 +47,13 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtOtpLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
-                android:text="Enter the One Time Password sent to your mobile number"
+                android:text="We have sent you an SMS with a 6-digit verification code on "
                 android:textColor="@color/subtitle_text_color"
                 android:textSize="@dimen/_12ssp" />
 
@@ -67,7 +68,9 @@
                 android:hint="@string/hint_enter_otp"
                 android:importantForAutofill="no"
                 android:inputType="number"
+                android:gravity="center"
                 android:maxLength="6"
+                android:textSize="@dimen/_13ssp"
                 android:padding="@dimen/_15sdp" />
 
             <Button

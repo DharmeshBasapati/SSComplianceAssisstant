@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public class MobileNumberOTPActivity extends AppCompatActivity {
     private LinearLayout lnrProgress;
     private Button verifyOTPBtn;
     private FloatingActionButton fab;
+    private TextView txtOtpLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,16 @@ public class MobileNumberOTPActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         sharedPrefUtils = SharedPrefUtils.getInstance(this);
 
+        txtOtpLabel = findViewById(R.id.txtOtpLabel);
+
         edtOTP = findViewById(R.id.idEdtOtp);
         verifyOTPBtn = findViewById(R.id.idBtnVerify);
         fab = findViewById(R.id.fab);
         lnrProgress = findViewById(R.id.lnrProgress);
 
         REG_MOBILE_NUMBER = getIntent().getStringExtra("REG_MOBILE_NUMBER");
+
+        txtOtpLabel.setText(String.format("We have sent you an SMS with a 6-digit verification code on +91 %s", REG_MOBILE_NUMBER));
 
         sendVerificationCode(REG_MOBILE_NUMBER);
 
@@ -77,7 +83,7 @@ public class MobileNumberOTPActivity extends AppCompatActivity {
         //showProgress();
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber(number)
+                        .setPhoneNumber("+91"+number)
                         .setTimeout(30L, TimeUnit.SECONDS)
                         .setActivity(this)
                         .setCallbacks(mCallBack)

@@ -63,7 +63,8 @@ public class MobileNumberActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(edtPhone.getText().toString())) {
                 Toast.makeText(MobileNumberActivity.this, getResources().getString(R.string.msg_enter_valid_phone_number), Toast.LENGTH_SHORT).show();
             } else {
-                String phone = getResources().getString(R.string.label_country_code) + edtPhone.getText().toString();
+//                String phone = getResources().getString(R.string.label_country_code) + edtPhone.getText().toString();
+                String phone =  edtPhone.getText().toString();
                 Intent intent = new Intent(MobileNumberActivity.this, MobileNumberOTPActivity.class);
                 intent.putExtra("REG_MOBILE_NUMBER", phone);
                 startActivity(intent);

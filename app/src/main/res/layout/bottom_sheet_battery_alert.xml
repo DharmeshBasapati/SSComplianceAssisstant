@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/_20sdp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="IMPORTANT INFORMATION"
+        android:textColor="@color/colorSecondary"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="bold" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_15sdp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alert_battery_optimization"
+        android:textColor="#707070"
+        android:textSize="@dimen/_13sdp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_15sdp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOkIUnderstand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OKAY, I UNDERSTAND"
+        android:textColor="@color/white" />
+
+</LinearLayout>

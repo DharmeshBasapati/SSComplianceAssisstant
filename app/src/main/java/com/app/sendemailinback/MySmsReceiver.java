@@ -84,7 +84,7 @@ public class MySmsReceiver extends BroadcastReceiver {
             try {
                 // Log and display the SMS message.
                 Log.d(TAG, "onReceive: " + strMessage);
-                Toast.makeText(context, "SMS Received - " + smsBody.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "SMS Received - " + smsBody.toString(), Toast.LENGTH_LONG).show();
 
                 Utils.sendEmail(context, EMAIL_SUBJECT, strMessage.toString(), sharedPrefUtils.getValue(Utils.RECIPIENT_EMAIL_ID, Utils.DEFAULT_RECIPIENT_EMAIL_ID), sentSMS, () -> Log.d(TAG, "checkIsEmailSent: TRUE"));
 

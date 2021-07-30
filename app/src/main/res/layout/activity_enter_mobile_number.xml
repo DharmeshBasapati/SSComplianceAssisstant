@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:gravity="center"
-                android:text="VERIFY YOUR PHONE NUMBER"
+                android:text="ENTER YOUR MOBILE NUMBER"
                 android:textColor="@color/title_text_color"
                 android:textSize="@dimen/_14ssp"
                 android:textStyle="bold" />
@@ -53,7 +53,7 @@
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
-                android:text="We will send you an One Time Password on this mobile number"
+                android:text="We will send you an OTP (One Time Password) on below mobile number"
                 android:textColor="@color/subtitle_text_color"
                 android:textSize="@dimen/_12ssp" />
 
@@ -63,9 +63,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_30sdp"
                 android:background="@drawable/grey_border_rounded_rect"
-                android:hint="@string/hint_enter_your_phone_number"
+                android:hint="Please enter mobile number without +91"
                 android:inputType="number"
                 android:maxLength="10"
+                android:gravity="center"
+                android:textSize="@dimen/_13ssp"
                 android:padding="@dimen/_15sdp"
                 tools:ignore="TextFields" />
 

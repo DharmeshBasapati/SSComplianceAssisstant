@@ -15,60 +15,67 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentInsetStartWithNavigation="0dp"
-            app:navigationIcon="@drawable/ic_cb_icon_white"
-            app:title="@string/app_name"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:title="About us"
             app:titleTextColor="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="@dimen/_30sdp">
+        android:layout_height="match_parent">
 
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_cb_reminder_app_logo" />
-
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_40sdp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla bibendum erat felis, quis accumsan diam tempus iaculis. Praesent iaculis dui sit amet turpis tincidunt malesuada et at lectus. Sed nec sem non mauris porttitor volutpat quis eget urna. Viverra suscipit odio sed sollicitudin." />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/_30sdp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRateApp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="rateApp"
-            android:layout_marginTop="@dimen/_40sdp"
-            android:text="RATE APP"
-            android:textColor="@color/colorPrimary" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnShareApp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="shareApp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="SHARE APP"
-            android:textColor="@color/colorPrimary" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cb_reminder_app_logo" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnContactUs"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="contactUs"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="CONTACT US"
-            android:textColor="@color/colorPrimary" />
-    </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:text="@string/about_us"
+                android:textColor="#707070"
+                android:textSize="@dimen/_14ssp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRateApp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:onClick="rateApp"
+                android:text="RATE APP"
+                android:textColor="@color/colorPrimary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnShareApp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:onClick="shareApp"
+                android:text="SHARE APP"
+                android:textColor="@color/colorPrimary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnContactUs"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:onClick="contactUs"
+                android:text="CONTACT US"
+                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -59,6 +59,7 @@ public class EmailAddressOTPActivity extends AppCompatActivity {
 
                     Toast.makeText(EmailAddressOTPActivity.this, getResources().getString(R.string.msg_email_verified_successfully), Toast.LENGTH_SHORT).show();
                     startActivity(i);
+                    finishAffinity();
                 } else {
                     Toast.makeText(EmailAddressOTPActivity.this, getResources().getString(R.string.msg_enter_correct_otp), Toast.LENGTH_SHORT).show();
                 }

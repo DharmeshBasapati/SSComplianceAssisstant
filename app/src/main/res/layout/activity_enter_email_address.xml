@@ -52,7 +52,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:text="We will send you an One Time Password on this email address"
+                android:text="We will send you an OTP (One Time Password) on below email address"
                 android:textColor="@color/subtitle_text_color"
                 android:textSize="@dimen/_12ssp" />
 
@@ -60,7 +60,9 @@
                 android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:layout_marginTop="@dimen/_30sdp"
+                android:textSize="@dimen/_13ssp"
                 android:background="@drawable/grey_border_rounded_rect"
                 android:hint="@string/hint_enter_your_email_address"
                 android:inputType="textEmailAddress"
