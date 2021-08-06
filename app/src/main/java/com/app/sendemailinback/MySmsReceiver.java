@@ -10,10 +10,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.work.Constraints;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,6 +23,7 @@ public class MySmsReceiver extends BroadcastReceiver {
     private static final String TAG =
             MySmsReceiver.class.getSimpleName();
     public static final String pdu_type = "pdus";
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -70,6 +67,22 @@ public class MySmsReceiver extends BroadcastReceiver {
                 strMessage.append(msgs[i].getMessageBody());
 
                 smsFromNumber = msgs[i].getOriginatingAddress();
+
+                //Resolving the contact name from the contacts.
+//                Uri lookupUri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(no));
+//                Cursor c = context.getContentResolver().query(lookupUri, new String[]{ContactsContract.Data.DISPLAY_NAME},null,null,null);
+//                try {
+//                    c.moveToFirst();
+//                    String  displayName = c.getString(0);
+//                    String ContactName = displayName;
+//                    Toast.makeText(context, ContactName, Toast.LENGTH_LONG).show();
+//
+//                } catch (Exception e) {
+//                    // handle exception
+//                }finally{
+//                    c.close();
+//                }
+
                 smsBody.append(msgs[i].getMessageBody());
                 smsType = "";
 
@@ -77,7 +90,7 @@ public class MySmsReceiver extends BroadcastReceiver {
 
             strMessage.append("</p><br/><br/>Kind Regards," +
                     "<br/>" +
-                    "Chartered Box Reminder Team");
+                    "Chartered Box DoNotMiss Team");
 
             sentSMS = new SMSModel(smsDate, smsFromNumber, smsBody.toString(), smsType, false);
 

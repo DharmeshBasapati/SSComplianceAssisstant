@@ -26,7 +26,7 @@ public class MailSender extends javax.mail.Authenticator {
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
         //Hostname of the SMTP mail server which you want to connect for sending emails.
-        props.setProperty("mail.host", "smtp.gmail.com");
+        props.setProperty("mail.host", Utils.SMTP_SERVER_NAME);
         props.put("mail.smtp.auth", true);
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.socketFactory.port", "465");

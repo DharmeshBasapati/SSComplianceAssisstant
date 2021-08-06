@@ -1,6 +1,7 @@
 package com.app.sendemailinback;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,7 @@ public class SMSListAdapter extends RecyclerView.Adapter<SMSListAdapter.MyViewHo
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView imgSMS;
+        public ImageView imgSMS;
         public TextView tvSMSFrom;
         public TextView tvSMSBody;
         public TextView tvSMSDate;

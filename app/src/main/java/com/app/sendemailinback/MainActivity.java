@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
         MaterialButton btnOkIUnderstand = bsdBatteryAlert.findViewById(R.id.btnOkIUnderstand);
         btnOkIUnderstand.setOnClickListener(v -> {
             bsdBatteryAlert.dismiss();
-            sharedPrefUtils.setValue(Utils.IS_USER_UNDERSTOOD,true);
+            sharedPrefUtils.setValue(Utils.IS_USER_UNDERSTOOD, true);
         });
 
     }
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
                 //Toast.makeText(this, "App is optimizing battery.", Toast.LENGTH_SHORT).show();
 
 
-                if(!bsdBatteryAlert.isShowing() && !sharedPrefUtils.getValue(Utils.IS_USER_UNDERSTOOD,false)){
+                if (!bsdBatteryAlert.isShowing() && !sharedPrefUtils.getValue(Utils.IS_USER_UNDERSTOOD, false)) {
                     bsdBatteryAlert.show();
                 }
 
@@ -279,23 +279,22 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
                 }).check();
 
 //        Dexter.withActivity(this)
-//                .withPermissions( Manifest.permission.RECEIVE_SMS)
+//                .withPermissions(Manifest.permission.RECEIVE_SMS)
 //                .withListener(new MultiplePermissionsListener() {
 //                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 //                    @Override
 //                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
 //                        if (multiplePermissionsReport.areAllPermissionsGranted()) {
-//                            if(bottomSheetDeclaration!=null){
+//                            if (bottomSheetDeclaration != null) {
 //                                bottomSheetDeclaration.dismiss();
 //                            }
-//                            Toast.makeText(MainActivity.this, "All the permissions are granted..", Toast.LENGTH_SHORT).show();
+//                            updateSentSMSList();
+//
+//                            //getPackageManager().addWhitelistedRestrictedPermission(BuildConfig.APPLICATION_ID,"Manifest.permission.RECEIVE_SMS",0);
+//
+//                            //Toast.makeText(MainActivity.this, "All the permissions are granted..", Toast.LENGTH_SHORT).show();
 //                        } else if (!multiplePermissionsReport.areAllPermissionsGranted() || multiplePermissionsReport.isAnyPermissionPermanentlyDenied()) {
-////                            if(bottomSheetDeclaration!=null){
-////                                bottomSheetDeclaration.dismiss();
-////                            }
-////                            bottomSheetDeclaration.show(getSupportFragmentManager(), bottomSheetDeclaration.getTag());
-//                            //showSettingsDialog();
-//                            //requestPermissions();
+//                            Log.i(TAG, "onPermissionDenied: ");
 //                        }
 //
 //                    }
@@ -311,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
 //            // in runtime permissions
 //            @Override
 //            public void onError(DexterError error) {
-//                Log.e(TAG, "onError: "+error.toString());
+//                Log.e(TAG, "onError: " + error.toString());
 //                // we are displaying a toast message for error message.
 //                Toast.makeText(getApplicationContext(), "Some Error occurred! ", Toast.LENGTH_SHORT).show();
 //            }
@@ -358,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
         TextView tvSMSDate = bsdSMSDetail.findViewById(R.id.tvSMSDate);
 
         imgShare.setOnClickListener(v -> {
-            Utils.shareSMS(MainActivity.this, smsModel.smsBody + "\n\n- Sent from Chartered Box Reminder");
+            Utils.shareSMS(MainActivity.this, smsModel.smsBody + "\n\n- Sent from Chartered Box DoNotMiss");
             //bsdSMSDetail.dismiss();
         });
 
@@ -393,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
                 sharedPrefUtils.setValue(Utils.IS_EMAIL_VERIFIED, false);
                 sharedPrefUtils.setValue(Utils.RECIPIENT_EMAIL_ID, "");
                 sharedPrefUtils.setValue(Utils.CURRENT_OTP, "");
-                sharedPrefUtils.setValue(Utils.IS_USER_UNDERSTOOD,false);
+                sharedPrefUtils.setValue(Utils.IS_USER_UNDERSTOOD, false);
 
                 //We can also clear Sent SMS list if needed
                 //sharedPrefUtils.setValue("SENT_SMS_LIST", null);

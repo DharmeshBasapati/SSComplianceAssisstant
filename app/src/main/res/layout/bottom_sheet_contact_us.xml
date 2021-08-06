@@ -24,9 +24,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#707070"
+            android:textColor="@color/colorSecondary"
             android:text="info@charteredbox.com"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_14sdp" />
 
     </LinearLayout>
 
@@ -53,8 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="9512963963"
-            android:textColor="#707070"
-            android:textSize="@dimen/_15sdp" />
+            android:textColor="@color/colorSecondary"
+            android:textSize="@dimen/_14sdp" />
 
     </LinearLayout>
 

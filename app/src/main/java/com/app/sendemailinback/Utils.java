@@ -20,32 +20,41 @@ import java.util.Random;
 
 public class Utils {
 
-    public static final String SENDER_EMAIL_ID = "Spacestem3@gmail.com";
-    public static final String SENDER_EMAIL_PASSWORD = "Spacestem@1234";
+    public static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.app.charteredboxdonotmiss";
 
-    public static final String DEFAULT_RECIPIENT_EMAIL_ID = "Spacestem3@gmail.com";
-    public static final String EMAIL_SUBJECT = "Chartered Box Reminder";
-    public static final String EMAIL_VERIFICATION_SUBJECT  = "Chartered Box Reminder Email Verification";
-    public static final String FROM_DISPLAY_NAME = "Chartered Box Reminder";
-    public static final String TO_DISPLAY_NAME = "Chartered Box Reminder";
+    //TEST
+    /*public static final String SENDER_EMAIL_ID = "Spacestem3@gmail.com";
+    public static final String SENDER_EMAIL_PASSWORD = "Spacestem@1234";*/
+
+    //LIVE
+    public static final String SENDER_EMAIL_ID = "info@charteredbox.com";
+    public static final String SENDER_EMAIL_PASSWORD = "Langalia@1234";
+    public static final String SMTP_SERVER_NAME = "smtpout.secureserver.net";
+
+    //public static final String SMTP_SERVER_NAME = "smtp.gmail.com";
+
+    public static final String DEFAULT_RECIPIENT_EMAIL_ID = "";
+    public static final String EMAIL_SUBJECT = "Chartered Box DoNotMiss";
+    public static final String EMAIL_VERIFICATION_SUBJECT = "Chartered Box DoNotMiss Email Verification";
+    public static final String FROM_DISPLAY_NAME = "Chartered Box DoNotMiss";
+    public static final String TO_DISPLAY_NAME = "Chartered Box DoNotMiss";
 
     public static final String RECIPIENT_EMAIL_ID = "RECIPIENT_EMAIL_ID";
     public static final String CURRENT_OTP = "CURRENT_OTP";
     public static final String VERIFIED_MOBILE_NUMBER = "VERIFIED_MOBILE_NUMBER";
     public static final String IS_MOBILE_VERIFIED = "IS_MOBILE_VERIFIED";
     public static final String IS_EMAIL_VERIFIED = "IS_EMAIL_VERIFIED";
-    public static final String IS_USER_UNDERSTOOD="IS_USER_UNDERSTOOD";
+    public static final String IS_USER_UNDERSTOOD = "IS_USER_UNDERSTOOD";
 
-//    public static final String SMS_DATE_FORMAT = "hh:mm a dd/MM/yyyy ";
+    //public static final String SMS_DATE_FORMAT = "hh:mm a dd/MM/yyyy ";
     public static final String SMS_DATE_FORMAT = "HH:mm dd-MMM-yy ";
 
     public static void shareSMS(Activity activity, String textToShare) {
         Intent intent2 = new Intent();
         intent2.setAction(Intent.ACTION_SEND);
         intent2.setType("text/plain");
-        intent2.putExtra(Intent.EXTRA_TEXT, textToShare );
+        intent2.putExtra(Intent.EXTRA_TEXT, textToShare);
         activity.startActivity(Intent.createChooser(intent2, "Share via"));
-
     }
 
     public static String getRandomNumberString() {
@@ -96,12 +105,12 @@ public class Utils {
                     Log.d("CBR-MAIL-SENDER - ", "sendEmail: Sending done...");
                     emailSendListener.onEmailSent();
 
-                    if (sentSMS != null) {
+                    if (sentSMS != null && recipientsEmailId.length() > 0) {
                         sentSMS.setEmailed(true);
                     }
                 }
 
-                if (sentSMS != null) {
+                if (sentSMS != null && recipientsEmailId.length() > 0) {
                     Utils.saveData(context, sentSMS);
                 }
 
