@@ -27,7 +27,7 @@ public class AboutUsActivity extends AppCompatActivity {
 
     public void rateApp(View view) {
         //https://play.google.com/store/apps/details?id=com.app.sscompliancereminder
-        Uri marketUri = Uri.parse("market://details?id=com.app.sscompliancereminder");
+        Uri marketUri = Uri.parse(Utils.PLAY_STORE_URL);
         Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
         try {
             startActivity(marketIntent);
@@ -37,7 +37,7 @@ public class AboutUsActivity extends AppCompatActivity {
     }
 
     public void shareApp(View view) {
-        Utils.shareSMS(AboutUsActivity.this, "Hey,\n\nChartered Box Reminder App is a service that allows to forward your SMS to registered Email address.\n\nGet it for free at\nmarket://details?id=com.app.sscompliancereminder");
+        Utils.shareSMS(AboutUsActivity.this, "Hey,\n\nChartered Box DonotMiss App is a service that allows to forward your SMS to registered Email address.\n\nGet it for free at\n"+Utils.PLAY_STORE_URL);
     }
 
     public void contactUs(View view) {

@@ -90,7 +90,7 @@ public class MySmsReceiver extends BroadcastReceiver {
 
             strMessage.append("</p><br/><br/>Kind Regards," +
                     "<br/>" +
-                    "Chartered Box DoNotMiss Team");
+                    "Chartered Box DonotMiss Team");
 
             sentSMS = new SMSModel(smsDate, smsFromNumber, smsBody.toString(), smsType, false);
 

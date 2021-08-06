@@ -28,5 +28,4 @@
         android:text="I AGREE"
         android:textColor="@color/white" />
 
-
 </LinearLayout>

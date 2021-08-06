@@ -47,13 +47,13 @@ public class EmailAddressActivity extends AppCompatActivity {
 
                 String messageBody = "Dear customer," +
                         "<br/><br/>" +
-                        "Please enter below OTP on Chartered Box DoNotMiss App." +
+                        "Please enter below OTP on Chartered Box DonotMiss App." +
                         "<br/><br/>" +
                         "<b>OTP: " + newOTP + "</b> "+
                         "<br/><br/>" +
                         "Kind Regards," +
                         "<br/>" +
-                        "Chartered Box DoNotMiss Team";
+                        "Chartered Box DonotMiss Team";
 
                 Utils.sendEmail(EmailAddressActivity.this,
                         EMAIL_VERIFICATION_SUBJECT, messageBody,

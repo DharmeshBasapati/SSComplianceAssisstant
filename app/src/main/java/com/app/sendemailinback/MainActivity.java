@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
         TextView tvSMSDate = bsdSMSDetail.findViewById(R.id.tvSMSDate);
 
         imgShare.setOnClickListener(v -> {
-            Utils.shareSMS(MainActivity.this, smsModel.smsBody + "\n\n- Sent from Chartered Box DoNotMiss");
+            Utils.shareSMS(MainActivity.this, smsModel.smsBody + "\n\n- Sent from Chartered Box DonotMiss");
             //bsdSMSDetail.dismiss();
         });
 

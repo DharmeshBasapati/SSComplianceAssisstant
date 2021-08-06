@@ -34,10 +34,10 @@ public class Utils {
     //public static final String SMTP_SERVER_NAME = "smtp.gmail.com";
 
     public static final String DEFAULT_RECIPIENT_EMAIL_ID = "";
-    public static final String EMAIL_SUBJECT = "Chartered Box DoNotMiss";
-    public static final String EMAIL_VERIFICATION_SUBJECT = "Chartered Box DoNotMiss Email Verification";
-    public static final String FROM_DISPLAY_NAME = "Chartered Box DoNotMiss";
-    public static final String TO_DISPLAY_NAME = "Chartered Box DoNotMiss";
+    public static final String EMAIL_SUBJECT = "Chartered Box DonotMiss";
+    public static final String EMAIL_VERIFICATION_SUBJECT = "Chartered Box DonotMiss Email Verification";
+    public static final String FROM_DISPLAY_NAME = "Chartered Box DonotMiss";
+    public static final String TO_DISPLAY_NAME = "Chartered Box DonotMiss";
 
     public static final String RECIPIENT_EMAIL_ID = "RECIPIENT_EMAIL_ID";
     public static final String CURRENT_OTP = "CURRENT_OTP";
